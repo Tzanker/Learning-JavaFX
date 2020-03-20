@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 
 
-public class Main extends Application {
+public class SEOrbit extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
