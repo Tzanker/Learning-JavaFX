@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -21,10 +22,21 @@ import javafx.scene.image.Image;
 import java.net.URL;
 import java.util.ArrayList;
 
+
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        class IntValue
+        {
+            public int value;
+
+            public IntValue(int i)
+            {
+                value = i;
+            }
+        }
         primaryStage.setTitle("Canvas Example");
 
         Group root = new Group();
@@ -35,6 +47,8 @@ public class Main extends Application {
         root.getChildren().add(canvas);
         ArrayList<Integer> input = new ArrayList<Integer>();
         input.add(1);
+        IntValue x = new IntValue(196);
+        IntValue y = new IntValue(196);
         theScene.setOnKeyPressed(
                 new EventHandler<KeyEvent>() {
                     public void handle(KeyEvent e) {
@@ -42,6 +56,14 @@ public class Main extends Application {
                         if (code == "SPACE") {
                             input.set(0,input.get(0)*-1);
                         }
+                    }
+                }
+        );
+        theScene.setOnMouseClicked(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent e) {
+                        x.value = (int) e.getX() - 54;
+                        y.value = (int) e.getY() -54;
                     }
                 }
         );
@@ -53,11 +75,11 @@ public class Main extends Application {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-                double x = 232 + 128 * Math.cos(t)*input.get(0);
-                double y = 232 + 128 * Math.sin(t*input.get(0));
+                double posx = x.value+36 + 128 * Math.cos(t)*input.get(0);
+                double posy = y.value+36 + 128 * Math.sin(t*input.get(0));
                 gc.clearRect(0, 0, 500, 500);
-                gc.drawImage(earth, x, y);
-                gc.drawImage(sun, 196, 196);
+                gc.drawImage(earth, posx, posy);
+                gc.drawImage(sun, x.value, y.value);
             }
 
         }.start();
